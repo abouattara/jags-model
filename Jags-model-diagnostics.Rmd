@@ -1,0 +1,159 @@
+---
+title: "Jags Model"
+author: "Abdoulaye OUATTARA"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: true
+    toc_float: True
+linkcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Diagnostics classiques pour s’assurer que les chaînes ont convergé 
+
+Pour s’assurer que les chaînes de Markov Monte Carlo (MCMC) ont convergé vers la distribution cible dans une analyse bayésienne, on utilise des diagnostics classiques comme le diagnostic de Gelman-Rubin et les traceplots. Voici une explication simple de ces outils :
+
+
+## Traceplots (Graphiques des traces)
+
+Ce sont des graphiques représentant l’évolution des valeurs échantillonnées d’un paramètre au fil des itérations de la chaîne MCMC.
+
+**But** : vérifier visuellement si la chaîne « explore » bien l’espace des paramètres et si elle semble stationnaire (pas de tendance ou dérive).
+
+
+
+**Interprétation** : Une chaîne convergente ressemble à un *« bruit blanc »* autour d’une valeur stable. Si la chaîne *« saute »* beaucoup, ou présente une tendance, cela suggère que la convergence n’est pas atteinte.
+
+On trace souvent plusieurs chaînes indépendantes (avec des points de départ différents) sur le même graphique pour comparer leur comportement.
+
+
+```{r,  echo=TRUE, eval=FALSE}
+library(coda)
+
+# Supposons que 'samples' est un objet mcmc.list contenant plusieurs chaînes
+
+# Traceplots
+plot(samples)  # Affiche les traces et densités pour chaque paramètre
+```
+
+## Diagnostic de Gelman-Rubin (ou facteur de réduction de l’échelle)
+
+Ce diagnostic compare la variance 
+**inter-chaînes** à la variance **intra-chaîne** pour chaque paramètre.
+
+**Principe** : si plusieurs chaînes ont convergé vers la même distribution, leurs moyennes et variances doivent être similaires. Le diagnostic calcule un facteur appelé *Potential Scale Reduction Factor* (PSRF), noté souvent \( \hat{R} \).
+
+
+**Interprétation** 
+
+\( \hat{R} \approx 1 \) signifie que les chaînes ont convergé. En pratique, on considère que la convergence est satisfaisante si \( \hat{R} < 1.1 \) (parfois \( \hat{R} < 1.05 \)). Des valeurs supérieures indiquent que les chaînes n’ont pas encore convergé et qu’il faut prolonger la simulation.
+
+Ce diagnostic nécessite au moins deux chaînes indépendantes initialisées différemment (idéalement « overdispersées »).
+
+```{r,  echo=TRUE, eval=FALSE}
+library(coda)
+
+# Supposons que 'samples' est un objet mcmc.list contenant plusieurs chaînes
+
+# Diagnostic Gelman-Rubin
+gelman_results <- gelman.diag(samples)
+print(gelman_results)
+```
+
+- La fonction *gelman.diag()* retourne pour chaque paramètre un PSRF avec un intervalle de confiance.
+
+- On attend que ces valeurs soient proches de 1.
+
+## Résumé des outils de diagnostic de convergence MCMC
+
+<table style="width:100%; border-collapse: collapse; text-align: left;">
+  <thead style="background-color: #f2f2f2;">
+    <tr>
+      <th style="padding: 8px; border: 1px solid #ddd;"><strong>Outil</strong></th>
+      <th style="padding: 8px; border: 1px solid #ddd;"><strong>But</strong></th>
+      <th style="padding: 8px; border: 1px solid #ddd;"><strong>Indication d’une bonne convergence</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 8px; border: 1px solid #ddd;">Traceplot</td>
+      <td style="padding: 8px; border: 1px solid #ddd;">Visualiser la stabilité</td>
+      <td style="padding: 8px; border: 1px solid #ddd;">Chaînes stables, sans tendance ni saut</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px; border: 1px solid #ddd;">Gelman-Rubin (PSRF)</td>
+      <td style="padding: 8px; border: 1px solid #ddd;">Comparer variances intra/inter-chaînes</td>
+      <td style="padding: 8px; border: 1px solid #ddd;">PSRF proche de 1 (ex. &lt; 1,1)</td>
+    </tr>
+  </tbody>
+</table>
+
+### Erreurs souvent rencontrées
+
+**Erreur**: *Erreur dans chol.default(W) : the leading minor of order 2 is not positive*
+
+Ce message, rencontré lors de l’utilisation de *gelman.diag()*, indique un échec dans le calcul du diagnostic de Gelman-Rubin. Les causes fréquentes incluent :
+
+
+- Un nombre insuffisant d’itérations ou de chaînes MCMC ;
+- Des chaînes constantes ou presque constantes ;
+- Des problèmes numériques dans le calcul de la matrice de covariance ;
+- Des paramètres non identifiables ou mal spécifiés dans le modèle.
+
+*Comment y remédier ?*
+
+***1. Vérifier la structure des échantillons MCMC***
+
+
+- Utilisez au moins deux chaînes (idéalement trois ou plus).
+- Chaque chaîne doit comporter un grand nombre d’itérations (généralement plusieurs milliers).
+- Vérifiez que les chaînes varient (à l’aide de *plot(samples)*).
+
+***2. Augmenter le nombre d’itérations et la période d’adaptation***
+
+- Augmentez *n.iter* et *n.adapt* dans *coda.samples()* ou *jags.samples()*.
+
+***3. Vérifier la spécification du modèle***
+
+- Assurez-vous que les paramètres sont identifiables.
+- Supprimez ou fixez certains paramètres pour simplifier le modèle.
+
+***4. Reparamétrer le modèle***
+
+- Appliquez des transformations (ex. *log*) pour des paramètres contraints.
+- Centrez et réduisez les variables.
+
+***5. Inspecter les diagnostics visuels***
+
+- Utilisez *plot(samples)* pour observer les traces.
+- Utilisez *densplot(samples)* pour analyser les densités marginales.
+
+***6. Exclure les paramètres constants***
+
+- *gelman.diag()* échoue sur des paramètres invariants.
+- Supprimez ces paramètres du jeu d’échantillons.
+
+
+***Autres stratégies si la convergence échoue***
+
+- Simplifiez le modèle (réduisez le nombre de paramètres).
+- Vérifiez l’intégrité et le format des données.
+- Utilisez des priors plus informatifs.
+- Testez des versions simplifiées du modèle pour localiser le problème.
+- Augmentez le nombre de chaînes et d’itérations.
+- Testez d’autres outils (ex. *nimble*, *Stan*).
+
+
+## References
+
+
+  - [The MCMC procedure – Gelman-Rubin Diagnostics, documentation SAS](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.4/statug/statug_mcmc_examples30.htm)
+  - [Bayesian Analysis: Gelman-Rubin Convergence, documentation Stata](https://www.stata.com/features/overview/gelman-rubin-convergence-diagnostic/)
+  - [MCMC Diagnostics, support de cours (University of Iowa)](https://myweb.uiowa.edu/pbreheny/uk/teaching/701/notes/3-5.pdf)
+ - [Good convergence diagnostic, bad trace plot (Stackexchange)](https://stats.stackexchange.com/questions/526057/good-convergence-diagnostic-bad-trace-plot)   
+
