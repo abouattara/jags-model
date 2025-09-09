@@ -14,7 +14,7 @@ Les diagnostics de convergence sont essentiels pour valider la fiabilité des r�
 
 ## 📂 Contenu
 
-- `diagnostics/` – Documents LaTeX expliquant les graphiques Gelman-Rubin et les tracés.
+- `diagnostics/` – jags-modelisation.pdf : Document LaTeX expliquant les graphiques Gelman-Rubin et les tracés.
 - `examples/` – Exemples de code MCMC et de vérifications de convergence dans R.
 - `plots/` – Exemples de tracés et illustrations de convergence.
 - `errors/` – Documentation sur les erreurs de convergence courantes et comment les corriger.
