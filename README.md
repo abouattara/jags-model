@@ -1,45 +1,45 @@
-# MCMC Diagnostics and Convergence Assessment
+# Diagnostics MCMC et évaluation de la convergence
 
-This repository contains resources, examples, and documentation related to the diagnosis of convergence in Markov Chain Monte Carlo (MCMC) simulations. The focus is on tools and techniques such as the **Gelman-Rubin diagnostic (PSRF)** and **trace plots**, commonly used in Bayesian statistical modeling.
+Ce référentiel contient des ressources, des exemples et de la documentation liés au diagnostic de la convergence dans les simulations par la méthode de Monte Carlo avec chaînes de Markov (MCMC). Il se concentre sur les outils et techniques tels que le **diagnostic de Gelman-Rubin (PSRF)** et les **graphiques de trace**, couramment utilisés dans la modélisation statistique bayésienne.
 
-## About This Work
+## À propos de ce travail
 
-Convergence diagnostics are essential for validating the reliability of MCMC results. Poor convergence can lead to biased inference and invalid conclusions. This repository aims to provide:
+Les diagnostics de convergence sont essentiels pour valider la fiabilité des résultats MCMC. Une convergence médiocre peut conduire à des inférences biaisées et à des conclusions invalides. Ce référentiel vise à fournir :
 
-- 📊 Visual tools like trace plots for assessing stationarity.
-- 🧪 Statistical diagnostics such as the Potential Scale Reduction Factor (\(\hat{R}\)).
-- 🛠 Troubleshooting strategies for common MCMC issues.
-- 📄 LaTeX documents and presentations explaining key concepts and solutions.
-- 🧩 Example implementations using R (`coda`, `rjags`, etc.).
+- 📊 Des outils visuels tels que des tracés pour évaluer la stationnarité.
+- 🧪 Des diagnostics statistiques tels que le facteur de réduction d'échelle potentiel (\(\hat{R}\)).
+- 🛠 Des stratégies de dépannage pour les problèmes courants liés au MCMC.
+- 📄 Des documents LaTeX et des présentations expliquant les concepts clés et les solutions.
+- 🧩 Des exemples d'implémentations utilisant R (`coda`, `rjags`, etc.).
 
-## 📂 Contents
+## 📂 Contenu
 
-- `diagnostics/` – LaTeX documents explaining Gelman-Rubin and trace plots.
-- `examples/` – Sample MCMC code and convergence checks in R.
-- `plots/` – Sample trace plots and convergence illustrations.
-- `errors/` – Documentation on common convergence errors and how to fix them.
+- `diagnostics/` – Documents LaTeX expliquant les graphiques Gelman-Rubin et les tracés.
+- `examples/` – Exemples de code MCMC et de vérifications de convergence dans R.
+- `plots/` – Exemples de tracés et illustrations de convergence.
+- `errors/` – Documentation sur les erreurs de convergence courantes et comment les corriger.
 
-## 📎 Key Features
+## 📎 Principales fonctionnalités
 
-- Clear explanation of **Gelman-Rubin PSRF diagnostic**.
-- Visualization of MCMC traces and convergence.
-- Solutions to errors such as `chol.default(W)` in `gelman.diag()`.
-- Guidance on best practices for MCMC modeling.
+- Explication claire du **diagnostic PSRF Gelman-Rubin**.
+- Visualisation des traces MCMC et de la convergence.
+- Solutions aux erreurs telles que `chol.default(W)` dans `gelman.diag()`.
+- Conseils sur les meilleures pratiques pour la modélisation MCMC.
 
-## 🔗 References
+## 🔗 Références
 
-- [SAS Documentation – Gelman-Rubin Diagnostic](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.4/statug/statug_mcmc_examples30.htm)
-- [Stata – Gelman-Rubin Convergence](https://www.stata.com/features/overview/gelman-rubin-convergence-diagnostic/)
-- [University of Iowa Teaching Resource](https://myweb.uiowa.edu/pbreheny/uk/teaching/701/notes/3-5.pdf)
+- [Documentation SAS – Diagnostic Gelman-Rubin](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.4/statug/statug_mcmc_examples30.htm)
+- [Stata – Convergence Gelman-Rubin](https://www.stata.com/features/overview/gelman-rubin-convergence-diagnostic/)
+- [Ressource pédagogique de l'université de l'Iowa](https://myweb.uiowa.edu/pbreheny/uk/teaching/701/notes/3-5.pdf)
 
-## 🧑‍💻 Author
+## 🧑‍💻 Auteur
 
-Created by **Abdoulaye OUATTARA**, as part of research on Bayesian inference and simulation diagnostics.
+Créé par **Abdoulaye OUATTARA**, dans le cadre de recherches sur l'inférence bayésienne et les diagnostics de simulation.
 
-## 📜 License
+## 📜 Licence
 
-This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
+Ce projet est sous licence MIT – voir le fichier [LICENCE](LICENCE) pour plus de détails.
 
 ---
 
-Feel free to contribute by submitting issues or pull requests. Suggestions and improvements are welcome!
+N'hésitez pas à contribuer en soumettant des problèmes ou des demandes d'extraction. Les suggestions et les améliorations sont les bienvenues !
