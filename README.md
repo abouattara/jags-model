@@ -1,6 +1,6 @@
 # Diagnostics MCMC et évaluation de la convergence
 
-Ce référentiel contient des ressources, des exemples et de la documentation liés au diagnostic de la convergence dans les simulations par la méthode de Monte Carlo avec chaînes de Markov (MCMC). Il se concentre sur les outils et techniques tels que le **diagnostic de Gelman-Rubin (PSRF)** et les **graphiques de trace**, couramment utilisés dans la modélisation statistique bayésienne.
+Ce repos contient des ressources, des exemples et de la documentation liés au diagnostic de la convergence dans les simulations par la méthode de Monte Carlo avec chaînes de Markov (MCMC). Il se concentre sur les outils et techniques tels que le **diagnostic de Gelman-Rubin (PSRF)** et les **graphiques de trace**, couramment utilisés dans la modélisation statistique bayésienne.
 
 ## À propos de ce travail
 
